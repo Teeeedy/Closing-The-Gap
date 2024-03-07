@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>LGA</title>
+
+   <link rel="stylesheet" type="text/css" href="Page22.css" />
+</head>
+<body>
+   <div class='topnav'>
+      <a href='/'>Homepage</a>
+      <a href='mission.html'>Homepage</a>
+      <a href='scope.html'>Homepage</a>
+      <a href='page3.html'>Homepage</a>
+      <a href='page4.html'>Sub Task 2.2</a>
+      <a href='page5.html'>Sub Task 2.2</a>
+      <a href='page6.html'>Sub Task 2.2</a>
+ 
+   </div>
+   
+   <div class='header'>
+      <h1 th:text="${title}"></h1>
+   </div>
+
+   <div class='content'>
+      <form action='/page4.html' method='post'>
+         <div class='form-group'>
+            <label for='lganame_drop'>Select the LGA:</label>
+            <select id='lganame_drop' name='lganame_drop'>
+               <!-- This is where the movies types are populated -->
+               <option th:each="name : ${names}" th:text="${name}"></option>
+            </select>
+         </div>
+         <button type='submit' class='btn btn-primary'>Submit</button>
+      </form>
+
+      <!-- Display movies. Use check of the size of the array list to optionally show the UL -->
+      <div th:if="${#lists.size(lganame_drop) > 0}"> 
+         <h2 th:text="${name_drop}"></h2>
+         <ul>
+            <li th:each="lganames : ${lganames_drop}" th:text="${lganames}"></li>
+         </ul>
+      </div>
+
+   <div class='footer'>
+      <p>COSC2803 Module 0 - Week 07</p>
+   </div>
+</body>
+</html>

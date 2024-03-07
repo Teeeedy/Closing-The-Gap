@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+  <script type="text/javascript"
+    src="https://www.maths.nottingham.ac.uk/plp/pmadw/LaTeXMathML.js">
+  </script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subtask 1 Level 2</title>
+    <link rel='stylesheet' type='text/css' href='page21.css' />
+</head>
+<body>
+    <div id='topnav'>
+      <a href='/'>Homepage</a>
+      <a href='mission.html'>Our Mission</a>
+      <a href='scope.html'>Scope</a>
+      <a href='st21.html'>Sub Task 2.1</a>
+      <a href='page4.html'>Sub Task 2.2</a>
+      <a href='PageST23.html'>Sub Task 2.3</a>
+    </div>
+
+    <div class ="dditd-content">
+        <h3 class="content-header">Deeper Dive Into The Data</h3>
+        <p>
+            On this page we will show you a deeper look at the 2021 datasets we have in our database and provide you with proportional data that we thought might be helpful.
+            We will provide this information in a table format for simplicity and ease of reading. From our 2021 data you can view a total of four datasets that mostly focus on the topics
+            <strong>Education, Health, Age</strong> and <strong>Income</strong>. With the data presented, we aim to provide more insight into the current state of the gap between
+            the non-indigenous and indigenous people of Australia. 
+        </p>
+    </div>
+    
+  
+    <h2 class="content-header">Dataset Choice</h2>
+    <!-- DATASET FORM -->
+    <div class="form-1">
+      <form action='/st21.html' method='post' >
+        <fieldset>
+          <div class='form-group dataset-form-group select'>
+              <label for='dataset_drop'>Select the dataset you would like to see:</label>
+              <select id='dataset_drop' name='dataset_drop'>
+                  <option value="" disabled selected>Datasets</option>
+                  <optgroup label="Indigenous Status By Age & By Sex">
+                    <option  th:text="${dataset_one}"></option>
+                  </optgroup>
+                  <optgroup label="Long Term Health Conditions By Indigenous Status & By Sex">
+                    <option  th:text="${dataset_two}"></option>
+                  </optgroup>
+                  <optgroup label="Highest Year Of School Completion By Indigenous Status & By Sex">
+                    <option  th:text="${dataset_three}"></option>
+                  </optgroup>
+                  <optgroup label="Total Hooushold Income Weekly By Indigenous Status Of Household">
+                    <option  th:text="${dataset_four}"></option>
+                  </optgroup>
+              </select>
+            <button type='submit' class='btn dataset-btn button'>Get Your Dataset</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+ 
+    
+
+    <!-- DROPDOWN LIST FOR CONDITIONS BASED ON FORMS -->
+    <div class="second-form">
+      <form th:if="${dataset_drop != null}" action='/st21.html' method="post"  >
+        <h2 class="content-header">Dataset Details</h2>
+        <div class='conditions-dropbox'>
+            <div class="select-option">
+            <label for="dataset-dropbox">Dataset:</label>
+              <select id="dataset-drop-two" name="dataset-drop-two">
+                <option th:value="${dataset_drop}" th:text="${dataset_drop}"></option>
+              </select>
+            </div>
+            <div class="select-option">
+              <label th:text="${condition_name} ?: 'Dataset Focus'" for="condition-drop"></label>
+              <select id='condition-drop' name='condition-drop'>
+                <option th:each="column : ${columns}" th:value="${column}" th:text="${column}"></option>
+              </select>
+            </div>
+            <div class="select-option">
+              <label for='sex-dropbox'>Select sex:</label>
+              <select id="sex-drop" name="sex-drop">
+                <option th:each="gender : ${sex}" th:value="${gender}" th:text="${gender}"></option>
+              </select>
+            </div>
+            <div class="select-option">
+              <label for='indig-status-dropbox'>Select Indigenous Status:</label>
+              <select id="indig-status-drop" name="indig-status-drop">
+                <option th:each="status : ${indig_status}" th:value="${status}" th:text="${status}"></option>
+              </select>
+            </div>
+            <div class="select-option">
+              <label for="order-category">Select Order Category:</label>
+              <select id="order-category" name="order-category">
+                <option th:each="header : ${header_column}"  th:value="${header}" th:text="${header}" th:if="${dataset_drop != null}"></option>
+              </select>
+            </div>
+            <div class="select-option">
+              <label for='indig-status-dropbox'>Order by:</label>
+              <select id="order-drop" name="order-drop">
+                <option th:each="order : ${orders}" th:value="${order}" th:text="${order}"></option>
+              </select>
+             </div>
+          <div class="button-row">
+          <label class="placeholder">Submit:</label>
+          <button type='submit' class='btn dataset-btn form-button'>Get Details</button>
+          </div>
+          </div>
+      </fieldset>
+      </form>
+
+
+     <div class="selected-details"  th:if="${dataset_drop_two != null}">
+        <h2 class="content-header details-header">Details Chosen</h2>
+        <div class="selected-detail">
+          <label th:text="'Dataset Chosen: ' + ${dataset_drop_two}">:</label>
+        </div>
+        <div class="selected-detail">
+          <label th:text="${condition_name} + ' ' + ${condition_drop}"></label>
+        </div>
+        <div class="selected-detail">
+          <label th:text="'Sex: ' + ${sex_drop}"></label>
+        </div>
+        <div class="selected-detail">
+          <label th:text="'Indigenous Status: ' + ${indig_status_drop}"></label>
+        </div>
+        <div class="selected-detail">
+          <label th:text="'Order Category: ' + ${order_category}"></label>
+        </div>
+        <div class="selected-detail">
+          <label th:text="'Order By: ' + ${order_drop}">Order By:</label>
+        </div>
+        <div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Table of content from dropdown boxes -->
+    <div class="outer-wrapper" th:if="${dataset_drop_two != null}" >
+      <div id="table-content">
+        <table>
+          <th th:each="header : ${header_column}" th:text="${header}"></th>
+          <tr th:each="row : ${display_values}" th:if="${order_drop != null}">
+            <td th:text="${row.lgaCode}"></td>
+            <td th:text="${row.indigStatus}"></td>
+            <td th:text="${row.sex}"></td>
+            <td th:text="${row.condition}"></td>
+            <td th:text="${row.conditionCount}"></td>
+            <td th:text="${row.propValue} + '%'"></td>
+            <td th:text="${row.gap} + '%'"></td>
+          </tr>
+        </table>
+      </div>
+  </div>
+
+  <div class="data-info">
+    <div>
+      <h2 class='content-header'>Proportional Data</h2>
+      <p>
+        The proportional data (PD) is calculated for each condition ("Age", "Income Range", "Health Condition", etc) in the dataset by the formula ((Condition count by 
+        indigenous staus / total population by indigenous status) x 100). Doing that gives us the proportional values unique to each count and indigenous status.
+      </p>
+    </div>
+    <div>
+      <h2 class='content-header'>The (GAP)</h2>
+      <p>
+        The gap (GAP) is created using the formula ((Total non-indigenous population - Total indigenous population)/ Total Populatoin) x 100). This gives us the 
+        GAP for each LGA code. With this we show the difference between the indigenous people and the non-indigenous people of Australia.
+      </p>
+    </div>
+  </div>
+  
+  
+
+  <div class='footer'>
+    <div class='footer-heading'>
+        <h2>About us</h2>
+        <a href='#'> Our story </a>
+        <a href='#'> Team </a>
+        <a href='#'> Blog </a>
+    </div>
+
+    <div class='footer-heading'>
+        <h2>Contact us</h2>
+        <a href='#'> Support </a>
+        <a href='#'> Send us a message </a>
+        <a href='#'> Newsletters </a>
+    </div>
+
+    <div class='footer-heading'>
+        <h2>Stay connected</h2>
+        <a href='#'> Facebook </a>
+        <a href='#'> Twitter </a>
+        <a href='#'> Instagram </a>
+    </div>
+
+</div>
+</body>
+</html>
